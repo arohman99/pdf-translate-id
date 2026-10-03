@@ -1,0 +1,24 @@
+# --- books, runs, and anything with real user content ---
+runs/
+*_temp/
+*_temp/
+inputs/
+outputs/
+*.epub
+*.pdf
+*.docx
+*.htmlz
+
+# --- scratch / working copies ---
+scratch/
+qa_images/
+*.log
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
