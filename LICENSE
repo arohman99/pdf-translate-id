@@ -1,6 +1,8 @@
 MIT License
 
-Copyright (c) 2025 Rainman
+Copyright (c) 2025 Rainman (original translate-book)
+Copyright (c) 2026 arohman99 (additions in this fork: preclassify.py, split_dispatch.py,
+docs/ including the EN-ID style guide and QA playbook)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

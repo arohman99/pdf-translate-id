@@ -203,3 +203,30 @@ full-book production runs.
 
 Contributions welcome — especially benchmark runs on other language pairs. Please include
 page/chunk counts and QA output with PRs.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE). Upstream copyright (Rainman, 2025) is preserved; additions
+in this fork are © 2026 arohman99.
+
+## Legal & content disclaimer
+
+This repository contains **code and documentation only**. It does not include, host, link to,
+or distribute any books, translations of copyrighted works, or ebooks. Users supply their own
+legally obtained files, and remain responsible for how they use this tool:
+
+- **The authors of this pipeline do not possess, distribute, or endorse unauthorized copies of
+  any book.** Source files used during development were obtained independently by the
+  developer through publicly available channels — the same channels any reader has access to —
+  and are not stored in this repository or in its git history (enforced by `.gitignore`).
+- This tool is functionally comparable to a word processor or an e-book reader: it operates on
+  documents the user already has. What a user does with their own files is outside this
+  project's control and responsibility.
+- If you are a rights holder and believe your copyrighted work must not be processed with this
+  tool, note that this repository distributes no such content. Copyright enforcement regarding
+  *files* belongs with wherever those files are hosted — not with the author of a converter.
+  For issues about this repository itself (code, docs, trademark concerns), open an issue.
+
+No warranty. The software is provided "as is", per the MIT license above.
