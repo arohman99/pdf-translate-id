@@ -136,3 +136,28 @@ every write. (Relevant for Windows+WSL2 hosts.)
 2. Image drift — silent (no error), destroys the book's value; caught only by size checks.
 3. Terminology drift — silent, cumulative across chunks; caught only by glossary governance.
 4. overlong_token / near_blank — usually benign; triage, don't fix reflexively.
+
+### Wrong-content placement (output exists, content belongs elsewhere)
+
+**Symptom**: `output_chunkNNNN.md` exists and passes `head -3` + `wc -w`, but its content is
+the translation of a *different* chunk (typically the next chapter heading was written into
+the previous chunk's output, and the real prose was never translated). Discovered in
+production: a 575-word opening narrative was missing from the final PDF while every
+verification step reported "file exists, verified".
+
+**Why existing checks miss it**: `head -3` confirms existence, not identity. Byte-size and
+word-count parity look plausible when a short heading chunk and a long prose chunk swap
+roles.
+
+**Detection**: word-count drift check (output <50% or >200% of source words) — mandatory
+pre-merge step now, not optional. Any warning is investigated by tracing the missing
+content into neighboring outputs (merged-into-neighbor is legitimate; truly absent content
+is a build blocker).
+
+**Fix**: translate the orphaned chunk, rebuild, and verify the previously-missing prose
+appears in the PDF (`pdftotext | grep -c <distinctive phrase>`).
+
+**Postmortem note**: this defect shipped in a 425-page PDF that passed all programmatic
+checks — including a visual QA pass on sampled pages (the gap fell between samples). The
+lesson: sampling-based visual QA is not a coverage guarantee; content-coverage checks
+(source→output mapping) are.
