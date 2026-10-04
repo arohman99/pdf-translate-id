@@ -80,6 +80,29 @@ chunk (conversion artifact), not a translation error.
 **Fix**: dedup in the specific chunk; check the corresponding `chunkNNNN.md` to confirm the
 source was the culprit before blaming the agent.
 
+### Seam word duplication (chunk boundary artifact)
+
+**Symptom**: the last words of one chunk's translation repeat at the head of the next —
+"... grows the compounding effect" | "The compounding effect of tiny habits ...". Unlike
+the class above, the source chunks are clean: parallel agents translate each chunk with
+fresh context and the overlap is introduced at the seam. Cost-of-defect class: like
+terminology drift — silent, cumulative, invisible to rendered-page QA (each page looks fine).
+
+**Detection**: `python3 scripts/check_seams.py <temp_dir>` before merge. It reports
+`ARTIFACT` (agent error) vs `SOURCE-DUP` (conversion artifact — route to the class above).
+Report-only by design; fix is a content edit to the head of the later `output_chunkNNNN.md`.
+
+### Word-count drift (agent paraphrased away or invented content)
+
+**Symptom**: a translated chunk lands far below or above its source word count —
+summarization, truncation, or hallucinated content that byte-size checks miss (paraphrase
+keeps byte length similar).
+
+**Detection**: automatic — `manifest.py validate_for_merge` warns when an output is <50% or
+>200% of its source words (chunks under ~50 source words are exempt: structural chunks
+legitimately shrink). Warning only; a legit dialogue-heavy or table-heavy chunk can trip it,
+so read the chunk before re-dispatching.
+
 ### Running-header capture bug
 
 **Symptom**: every page's running header shows one stale word ("Untuk" — the dedication

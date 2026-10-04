@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+- `scripts/check_seams.py`: detect duplicated words at chunk seams before merge
+  (parallel-agent artifact; distinguishes agent artifacts from source conversion
+  duplicates). Report-only, `--selftest` included. Ported from a production
+  format-preserving PDF overlay pipeline (line-level seams).
+- `manifest.py`: word-count drift warning in `validate_for_merge` (<50% or >200%
+  of source words, chunks <50 source words exempt) — catches summarization /
+  hallucination that byte-size checks miss. Warning only.
+- Docs: two new defect classes in `docs/qa-playbook.md` (seam word duplication,
+  word-count drift); README failure-mode table no longer claims an automatic
+  fixed-column → pipe-table converter that does not exist in the code (the
+  manual fix documented in `docs/qa-playbook.md` is the actual path).
+
 ## 1.0.0 — 2026-10-04
 
 First public release. Battle-tested on three full commercial books (EN→ID):

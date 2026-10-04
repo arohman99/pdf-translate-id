@@ -20,7 +20,7 @@ concrete fix here.
 |---|---|---|
 | **Terminology drift** | 8 parallel agents each invent their own translation of "compounding" | `glossary.py` + frozen glossary table injected into every prompt |
 | **Structural pages dropped** | Chapter dividers, copyright, acknowledgments silently skipped | `preclassify.py` routes structural chunks to one light batch instead of full LLM dispatch — *translated, never dropped* |
-| **Markdown leaks into PDF** | `**PERNYATAAN MISI*` printed as literal text; fragile fixed-column tables collapse | `pdf_qa.py` renders pages and fails the build on leaks; pipeline includes a fixed-column → pipe-table converter path |
+| **Markdown leaks into PDF** | `**PERNYATAAN MISI*` printed as literal text; fragile fixed-column tables collapse | `pdf_qa.py` renders pages and fails the build on leaks; a rendered-page defect report pinpoints the chunk to fix (see `docs/qa-playbook.md` → pipe-table fix) |
 
 Plus two throughput problems nobody warns you about:
 

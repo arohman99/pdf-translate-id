@@ -17,6 +17,15 @@ def file_hash(filepath):
     return h.hexdigest()
 
 
+def word_count(filepath):
+    """Word count of a text file; 0 if unreadable."""
+    try:
+        with open(filepath, encoding='utf-8', errors='replace') as f:
+            return len(f.read().split())
+    except OSError:
+        return 0
+
+
 def create_manifest(temp_dir, chunk_files, source_md_path):
     """Create manifest.json after splitting.
 
@@ -126,6 +135,24 @@ def validate_for_merge(temp_dir):
                     f"Suspiciously short: {chunk['output_file']} "
                     f"({output_size} bytes vs source {source_size} bytes)"
                 )
+
+        # Word-count drift: byte size misses an agent that paraphrases away or
+        # hallucinates extra content at similar byte length. Below ~50 source
+        # words the ratio is noise (structural chunks), so skip.
+        if os.path.exists(source_path) and os.path.exists(output_path):
+            src_words = word_count(source_path)
+            out_words = word_count(output_path)
+            if src_words >= 50 and out_words > 0:
+                if out_words < src_words * 0.5:
+                    warnings.append(
+                        f"Word count drift: {chunk['output_file']} has {out_words} words "
+                        f"vs source {src_words} (<50%) — possible summarization/truncation"
+                    )
+                elif out_words > src_words * 2.0:
+                    warnings.append(
+                        f"Word count drift: {chunk['output_file']} has {out_words} words "
+                        f"vs source {src_words} (>200%) — possible hallucinated content"
+                    )
 
         ordered_output_files.append(output_path)
 
